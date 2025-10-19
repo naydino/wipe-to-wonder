@@ -4,6 +4,15 @@ html, body {
   background: radial-gradient(circle at 20% 10%, #ffd6f6 0%, #c9e7ff 40%, #ffffff 100%);
   font-family: 'Comic Sans MS', cursive, system-ui, -apple-system, Segoe UI;
   overflow: hidden;
-  touch-action: none;
+  height: 100%;
+  touch-action: none;               /* <-- key */
+  -webkit-user-select: none;
+  user-select: none;
 }
-canvas { display: block; }
+
+canvas, video {
+  display: block;
+  touch-action: none;               /* <-- key */
+  -webkit-user-select: none;
+  user-select: none;
+}

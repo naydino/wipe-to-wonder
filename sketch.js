@@ -18,12 +18,19 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  const cnv = createCanvas(windowWidth, windowHeight);
+cnv.elt.style.touchAction = 'none';
+cnv.elt.style.userSelect = 'none';
+
   pixelDensity(1);
 
   // webcam
-  capture = createCapture(VIDEO);
+capture = createCapture({ video: { facingMode: 'user' }, audio: false }, () => {
+  // iOS sometimes needs a frame before size sticks
   capture.size(width, height);
-  capture.hide();
+});
+capture.hide();
+
 
   // overlay poster to wipe
   foreground = createGraphics(width, height);
@@ -58,9 +65,24 @@ function setup() {
   swipeHint = new SwipeHint();
   
   
+  // Prevent double-tap zoom & pinch on iOS inside the canvas
+document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('touchmove', e => {
+  // Only block if the touch is over our canvas
+  if (e.target === cnv.elt) e.preventDefault();
+}, { passive: false });
+
+  
 }
 
 function draw() {
+  
+  if (capture && capture.loadedmetadata) {
+  image(capture, 0, 0, width, height);
+} else {
+  // fallback — soft background already drawn; no video, still swipe works
+}
+
   // dreamy gradient
   setGradient(gradientTop, gradientBottom);
   drawScanlines();
@@ -293,14 +315,33 @@ function mouseDragged() {
   eraseAt(mouseX, mouseY);
 }
 
+function touchStarted() {
+  hasInteracted = true;
+
+  // optional: start erase immediately on first tap (use touches[0])
+  if (touches.length > 0) {
+    eraseAt(touches[0].x, touches[0].y);
+  }
+
+  return false;
+}
+
+
 function touchMoved() {
   hasInteracted = true;
   eraseAt(touchX, touchY);
-  return false;
+  return false; // <-- prevents page scroll/zoom
+}
+
+function mouseDragged() {
+  hasInteracted = true;
+  eraseAt(mouseX, mouseY);
 }
 
 function eraseAt(x,y){ const d=max(90, min(width,height)*0.12); foreground.erase(); foreground.circle(x,y,d); foreground.noErase(); }
 function windowResized(){ resizeCanvas(windowWidth, windowHeight); foreground=createGraphics(width,height); foreground.image(img,0,0,width,height); }
+
+
 
 /* ---------- Swipe Hint (animated finger + sparkles) ---------- */
 class SwipeHint {
