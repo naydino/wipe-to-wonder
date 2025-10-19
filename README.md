@@ -10,7 +10,7 @@ Works on desktop & mobile, requires a webcam. Hit **Refresh** to reset the magic
 
 ### 🖥️ Try it live
 
-👉 [[https://yourusername.github.io/sparkle-reveal](https://yourusername.github.io/sparkle-reveal)](https://naydino.github.io/wipe-to-wonder/)
+👉https://naydino.github.io/wipe-to-wonder/
 
 ---
 
