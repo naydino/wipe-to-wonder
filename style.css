@@ -1,0 +1,9 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at 20% 10%, #ffd6f6 0%, #c9e7ff 40%, #ffffff 100%);
+  font-family: 'Comic Sans MS', cursive, system-ui, -apple-system, Segoe UI;
+  overflow: hidden;
+  touch-action: none;
+}
+canvas { display: block; }
